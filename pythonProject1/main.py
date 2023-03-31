@@ -1,21 +1,16 @@
+from scripts import *
 import aiogram
-import requests
-import json
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
+
+
 global text_output
+global partnumber
 
 API_TOKEN = '6169576984:AAHm5TXIALWv-LPbcQq8X2wrgvpzmLHtYN4'
-#
-# driver = webdriver.Firefox()
 
 bot = aiogram.Bot(token=API_TOKEN)
 dp = aiogram.Dispatcher(bot)
+partnumber = ''
 
-partnumber = 0
-
-moskusername = "arssenalavto"
-moskpassword = "3O3COJFGu"
 
 @dp.message_handler(commands=['start'])
 async def welcome(message: aiogram.types.Message):
@@ -24,24 +19,19 @@ async def welcome(message: aiogram.types.Message):
 
 @dp.message_handler(content_types=['text'])
 async def echo(message: aiogram.types.Message):
-    global partnumber, moskusername, moskpassword
     partnumber = message.text
-    url = "http://portal.moskvorechie.ru/portal.api?l=arssenalavto&p=7JSdPzITil0bDYbxv2jShC7oHjEfPjgmxpQ9IIUICNL0r5CuNOUEnbiT53kz4QWz&act=price_by_nr_firm&v=1&nr="+partnumber+"&cs=utf8&oe=1&extstor=1&alt=1"
+    # await message.answer(moskv(partnumber))
+
+    url = 'http://klg.rossko.ru/service/v1/GetSearch?wsdl=&KEY1=dfbaadd0afa1523134d8bf00ce44f24c&KEY2=62b9f44a36189d9e23fe430bc53f7c68&text=' + partnumber
     text_output = ''
 
-    payload={}
+    payload = {}
     headers = {}
 
     response = requests.request("GET", url, headers=headers, data=payload)
 
-    result = json.loads(response.text)['result']
-    for i in range(0,len(result)):
-        text_output += '\n' + result[i]['brand'] + ' - ' + result[i]['name'] + '\n цена:' + result[i]['price'] + '\n'
-        print(text_output)
-    await message.answer(text_output)
-
-
-
+    result = json.loads(response.text)
+    print(result)
 
 
 if __name__ == '__main__':
