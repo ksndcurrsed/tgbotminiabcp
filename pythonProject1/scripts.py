@@ -1,5 +1,11 @@
 import requests
 import json
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
+
+driver = webdriver.Chrome()
+driver.implicitly_wait(50)
 def moskv(partnumber):
     url = "http://portal.moskvorechie.ru/portal.api?p=ktp3M3tVkckOa5bgFB8IhMfnS93wOzBRbMZz3zypYuiHPIWgtLFcVA7zVCuxEzq0&act=price_by_nr_firm&v=1&cs=utf8&oe=1&extstor=1&alt=1&nr="+partnumber+"&l=arssenalavto"
     text_output = ''
@@ -23,14 +29,16 @@ def moskv(partnumber):
         return 'Вот что есть на портале Москворечье:' + '\n' + '\n' + text_output
 
 def rossko(partnumber):
-    url = 'http://klg.rossko.ru/service/v1/GetSearch?wsdl=&KEY1=dfbaadd0afa1523134d8bf00ce44f24c&KEY2=62b9f44a36189d9e23fe430bc53f7c68&text=' + partnumber
-    text_output = ''
-
-    payload = {}
-    headers = {}
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    result = json.loads(response.text)
-    print(result)
-
+    driver.get('https://klg.rossko.ru/')
+    driver.implicitly_wait(10)
+    log = driver.find_element(By.XPATH, "/html/body/div[1]/header/div[2]/div/div/nav/ul/li[2]/div/div/form/div[1]/input")
+    passw = driver.find_element(By.XPATH,'/html/body/div[1]/header/div[2]/div/div/nav/ul/li[2]/div/div/form/div[2]/input')
+    ActionChains(driver)\
+        .move_to_element(log)\
+        .click()\
+        .send_keys('dastersilik@gmail.com')
+    ActionChains(driver)\
+        .move_to_element(passw)\
+        .click()\
+        .send_keys('123456')
+    driver.find_element(By.XPATH,'/html/body/div[1]/header/div[2]/div/div/nav/ul/li[2]/div/div/form/div[4]/button').click()
