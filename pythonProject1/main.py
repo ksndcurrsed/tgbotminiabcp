@@ -9,7 +9,7 @@ import time
 global text_output
 global partnumber
 
-API_TOKEN = '6169576984:AAHm5TXIALWv-LPbcQq8X2wrgvpzmLHtYN4'
+API_TOKEN = 'TOKEN'
 
 bot = aiogram.Bot(token=API_TOKEN)
 dp = aiogram.Dispatcher(bot)
@@ -23,8 +23,6 @@ async def welcome(message: aiogram.types.Message):
 @dp.message_handler(content_types=['text'])
 async def answ(message: aiogram.types.Message):
     partnumber = message.text
-    # await message.answer(moskv(partnumber))
-    # await message.answer(rossko(partnumber))
     driver.get('https://klg.rossko.ru/auth')
     driver.find_element(By.XPATH, '//*[@id="auth_email"]').send_keys('dastersilik@gmail.com')
     driver.find_element(By.XPATH, '//*[@id="auth_password"]').send_keys('123456')
@@ -39,8 +37,7 @@ async def answ(message: aiogram.types.Message):
     soup = BeautifulSoup(page_source, 'lxml')
     vendor = soup.find('div', class_='wrapper').find('div', class_='skin layout').find('div', id_='main-group').find('section', class_='src-features-product-card-components-variant-___index__wrap___uvCfG src-features-product-card-components-variant-___index__open___F-w5c')
     print(vendor)
-    #for quote in vendor:
-       # print(quote.text)
+    
 if __name__ == '__main__':
     aiogram.executor.start_polling(dp)
 
