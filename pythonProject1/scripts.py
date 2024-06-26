@@ -36,9 +36,9 @@ def rossko(partnumber):
     ActionChains(driver)\
         .move_to_element(log)\
         .click()\
-        .send_keys('dastersilik@gmail.com')
+        .send_keys('email')
     ActionChains(driver)\
         .move_to_element(passw)\
         .click()\
-        .send_keys('123456')
+        .send_keys('pass')
     driver.find_element(By.XPATH,'/html/body/div[1]/header/div[2]/div/div/nav/ul/li[2]/div/div/form/div[4]/button').click()
